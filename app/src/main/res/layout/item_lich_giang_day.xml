@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#D543A047"
+    android:id="@+id/lnItem"
+    >
+
+    <RadioButton
+        android:id="@+id/rbCheck"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:paddingLeft="30dp"
+        android:layout_marginLeft="15dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lớp học phần"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:id="@+id/tvLopHocPhan"
+                android:textStyle="bold"
+                android:paddingLeft="3dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiết:"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:paddingLeft="3dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/tvTietHoc"
+                    android:layout_height="wrap_content"
+                    android:text="1,2,3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phòng học:"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:paddingLeft="3dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/tvPhongHoc"
+                    android:layout_height="wrap_content"
+                    android:text="C5-201"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày:"
+                    android:textStyle="bold"
+                    android:paddingLeft="3dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#FFF"
+                    android:id="@+id/tvNgay"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/2020"/>
+            </LinearLayout>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:id="@+id/ivShow"
+            android:src="@drawable/ic_arrow"/>
+
+    </LinearLayout>
+
+</LinearLayout>
