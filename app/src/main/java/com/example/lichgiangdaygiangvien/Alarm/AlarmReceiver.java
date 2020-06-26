@@ -1,5 +1,6 @@
 package com.example.lichgiangdaygiangvien.Alarm;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,9 +35,25 @@ public class AlarmReceiver extends BroadcastReceiver {
         database_lich_giang_day = new Database_Lich_Giang_Day(context, Key_Database.DATABASE_NAME, null, 1);
         //arrayList.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
         arrayList.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
+        //arrayList.add(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
 
         if(arrayList.size() == 0){
-            tongHop.append("Không có lịch !!!\n");
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
+            MediaPlayer mediaPlayer = MediaPlayer.create(context, alarmSound);
+            mediaPlayer.start();
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Thông báo !!!\n")
+                    .setContentText("Ngày mai bạn rảnh ")
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+//            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
+//            managerCompat.notify(1, builder.build());
+
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify((int) System.currentTimeMillis(), builder.build());
+
 
         }else {
 
@@ -50,6 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 phongHoc = item.getPhongHoc();
 
                 tongHop.append(lopHocPhan +" " +tietHoc+" " +phongHoc+"\n");
+                //dlTongHop += lopHocPhan +" " +tietHoc+" "+phongHoc+"\n";
             }
 
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
@@ -62,11 +80,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setContentText(tongHop.toString())
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-            managerCompat.notify(1, builder.build());
+//            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
+//            managerCompat.notify(1, builder.build());
 
-//            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//            manager.notify((int) System.currentTimeMillis(), builder.build());
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify((int) System.currentTimeMillis(), builder.build());
 
 
         }

@@ -16,13 +16,16 @@ public class Thoi_Gian_Thong_Bao {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void thongBao(Context context){
-        if(Build.VERSION_CODES.O >= Build.VERSION_CODES.O){
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             String name = "ten";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            NotificationChannel  channel = new NotificationChannel("CHANNEL_ID", name, importance);
             notificationManager.createNotificationChannel(channel);
+
+
         }
     }
 
@@ -30,7 +33,6 @@ public class Thoi_Gian_Thong_Bao {
     public static void thoiGianThongBao(Context context){
 
         Calendar calendar = Calendar.getInstance();
-
         calendar.set(Calendar.HOUR_OF_DAY, 20);
         calendar.set(Calendar.MINUTE, 00);
         calendar.set(Calendar.SECOND, 00);
@@ -38,25 +40,12 @@ public class Thoi_Gian_Thong_Bao {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         //tồn tại khi thoát ứng dụng
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
     }
 
-//    public static void thoiGianThongBao(long time, Context context){
-//
-//
-//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        //gửi dl lên alarmreserver
-//        Intent intent = new Intent(context, AlarmReceiver.class);
-//        //PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-//        //hiển thị thông báo theo ngày
-//        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, pendingIntent);
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, pendingIntent);
-//    }
 
 
 }
