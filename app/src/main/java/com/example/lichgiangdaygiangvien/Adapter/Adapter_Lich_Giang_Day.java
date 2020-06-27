@@ -167,7 +167,7 @@ public class Adapter_Lich_Giang_Day extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 String lopHocPhan = hoder.etLopMonHoc.getText().toString();
-                int tinChi = Integer.parseInt(hoder.spTinChi.getSelectedItem().toString());
+                String tinChi = hoder.spTinChi.getSelectedItem().toString();
                 String tietHoc = hoder.etTietHoc.getText().toString();
                 String phongHoc = hoder.etPhongHoc.getText().toString();
                 String ngayThang = hoder.tvNgaySua.getText().toString();

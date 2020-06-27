@@ -4,7 +4,7 @@ public class Lich_Giang_Day {
 
     private int id;
     private String lopHocPhan;
-    private int tinChi;
+    private String tinChi;
     private String tietHoc;
     private String phongHoc;
     private String ngayThang;
@@ -12,7 +12,7 @@ public class Lich_Giang_Day {
     public Lich_Giang_Day() {
     }
 
-    public Lich_Giang_Day(String lopHocPhan, int tinChi, String tietHoc, String phongHoc, String ngayThang) {
+    public Lich_Giang_Day(String lopHocPhan, String tinChi, String tietHoc, String phongHoc, String ngayThang) {
         this.lopHocPhan = lopHocPhan;
         this.tinChi = tinChi;
         this.tietHoc = tietHoc;
@@ -20,7 +20,7 @@ public class Lich_Giang_Day {
         this.ngayThang = ngayThang;
     }
 
-    public Lich_Giang_Day(int id, String lopHocPhan, int tinChi, String tietHoc, String phongHoc, String ngayThang) {
+    public Lich_Giang_Day(int id, String lopHocPhan, String tinChi, String tietHoc, String phongHoc, String ngayThang) {
         this.id = id;
         this.lopHocPhan = lopHocPhan;
         this.tinChi = tinChi;
@@ -45,11 +45,11 @@ public class Lich_Giang_Day {
         this.lopHocPhan = lopHocPhan;
     }
 
-    public int getTinChi() {
+    public String getTinChi() {
         return tinChi;
     }
 
-    public void setTinChi(int tinChi) {
+    public void setTinChi(String tinChi) {
         this.tinChi = tinChi;
     }
 

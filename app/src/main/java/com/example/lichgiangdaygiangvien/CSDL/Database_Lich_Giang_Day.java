@@ -22,7 +22,7 @@ public class Database_Lich_Giang_Day extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String truyVan = "CREATE TABLE IF NOT EXISTS "+Key_Database.TABALE_NAME+"("+Key_Database.ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
                 +Key_Database.LOP_HOC_PHAN+" VARCHAR(200), "
-                +Key_Database.TIN_CHI+" INTEGER, "
+                +Key_Database.TIN_CHI+" VARCHAR(200), "
                 +Key_Database.TIET_HOC+" VARCHAR(50), "
                 +Key_Database.PHONG_HOC+" VARCHAR(100), "
                 +Key_Database.NGAY+" VARCHAR(100))";
@@ -61,7 +61,7 @@ public class Database_Lich_Giang_Day extends SQLiteOpenHelper {
 
                 giang_day.setId(cursor.getInt(0));
                 giang_day.setLopHocPhan(cursor.getString(1));
-                giang_day.setTinChi(cursor.getInt(2));
+                giang_day.setTinChi(cursor.getString(2));
                 giang_day.setTietHoc(cursor.getString(3));
                 giang_day.setPhongHoc(cursor.getString(4));
                 giang_day.setNgayThang(cursor.getString(5));

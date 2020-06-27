@@ -12,6 +12,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,7 +51,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,8 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        anhXa();
         xinQuyen();
+        anhXa();
+
         xuLy();
         show_Data();
 
@@ -247,60 +248,69 @@ public class MainActivity extends AppCompatActivity {
     public void readExcelData(){
         try {
             final String regex = "\\d+-\\d+-\\d+";
-            final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE | Pattern.COMMENTS);
+            //final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE );
+            Pattern pattern1 = Pattern.compile(regex);
 
             InputStream myInput;
 
             myInput = getContentResolver().openInputStream(uri);
-
             POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
 
-
             HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
+
 
             HSSFSheet mySheet = myWorkBook.getSheetAt(0);
 
             Iterator rowIter = mySheet.rowIterator();
+
             for(int i=0;i<10;i++){
                 Row row = (Row) rowIter.next();
             }
             Calendar start = Calendar.getInstance();
             Calendar end = Calendar.getInstance();
             String start1,end1;
-            int dem = 0;
+            String[] ngayThangNam, ngayThangNam2;
+            int thu = 2;
             while (rowIter.hasNext()){
                 Row row = (Row) rowIter.next();
+                Matcher matcher = pattern1.matcher(row.getCell(1).getStringCellValue());
                 if(row.getCell(1).toString().startsWith("TUẦN") || row.getCell(1).toString().isEmpty()){
-                    Matcher matcher = pattern.matcher(row.getCell(1).toString());
+
                     matcher.find();
                     start1 = matcher.group(0);
-                    String[] ngayThangNam = matcher.group(0).split("-");
-                    start.set(Integer.parseInt(ngayThangNam[0]), Integer.parseInt(ngayThangNam[1]), Integer.parseInt(ngayThangNam[2]));
+                    ngayThangNam = matcher.group(0).split("-");
+                    start.set(Integer.parseInt(ngayThangNam[2]), Integer.parseInt(ngayThangNam[1]), Integer.parseInt(ngayThangNam[0]));
 
                     matcher.find();
                     end1 = matcher.group(0);
-                    String[] ngayThangNam2 = matcher.group(0).split("-");
-                    end.set(Integer.parseInt(ngayThangNam2[0]), Integer.parseInt(ngayThangNam2[1]), Integer.parseInt(ngayThangNam2[2]));
+                    ngayThangNam2 = matcher.group(0).split("-");
+                    end.set(Integer.parseInt(ngayThangNam2[2]), Integer.parseInt(ngayThangNam2[1]), Integer.parseInt(ngayThangNam2[0]));
 
-
-                    dem = 2;
-
-                    Log.d("duong", ngayThangNam[0] +"-"+ngayThangNam[1]+"-"+ngayThangNam[2]);
-                    Log.d("duong", ngayThangNam2[0] +"-"+ngayThangNam2[1]+"-"+ngayThangNam2[2]);
 
                     continue;
                 }else {
-                    Lich_Giang_Day lich_giang_day = new Lich_Giang_Day();
-                    start.add(Integer.parseInt(row.getCell(3).toString()) - dem, Calendar.DATE);
-                    dem = Integer.parseInt(row.getCell(3).toString());
-                    database_lich_giang_day.them_Du_Lieu(lich_giang_day);
 
+//                    int tam = (int)Double.parseDouble(String.valueOf(row.getCell(3).getNumericCellValue())) - thu;
+//                    //Log.d("Test", tam+"");
+//                    start.add(tam, Calendar.DATE);
+//                    thu = Integer.parseInt(row.getCell(3).toString());
+
+
+                    String lopHocPhan = row.getCell(1).toString();
+                    String tinChi = row.getCell(2).toString();
+                    String tietHoc = row.getCell(4).toString();
+                    String phongHoc = row.getCell(5).toString();
+                    String ngayThang = "";
+
+                    Lich_Giang_Day lich_giang_day = new Lich_Giang_Day(lopHocPhan, tinChi, tietHoc, phongHoc, ngayThang);
+                    Log.d("Lịch Giảng Dạy", lich_giang_day.toString());
+                    //database_lich_giang_day.them_Du_Lieu(lich_giang_day);
                 }
 
             }
 
         } catch (Exception e) {
-            Log.e("TAG", "error "+ e.toString());
+            Log.e("main", "error "+ e.toString());
         }
     }
 }

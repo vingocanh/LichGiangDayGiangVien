@@ -92,7 +92,7 @@ public class Fragment_Them extends Fragment {
                     Toast.makeText(context, "Bạn không được để trống !!!", Toast.LENGTH_LONG).show();
                 }else {
                     String lopHocPhan = etLopMonHoc.getText().toString();
-                    int tinChi = Integer.parseInt(spTinChi.getSelectedItem().toString());
+                    String tinChi = spTinChi.getSelectedItem().toString();
                     String tietHoc = etTietHoc.getText().toString();
                     String phongHoc = etPhongHoc.getText().toString();
                     String ngayThang = tvNgay.getText().toString();
