@@ -3,10 +3,15 @@ package com.example.lichgiangdaygiangvien;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,13 +41,23 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 //import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         anhXa();
+        xinQuyen();
         xuLy();
         show_Data();
 
@@ -168,21 +184,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    private void xinQuyen() {
-//        String[] permissions = new String[]{
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                Manifest.permission.READ_EXTERNAL_STORAGE
-//        };
-//        List<String> listPermissionsNeeded = new ArrayList<>();
-//        for (String permission : permissions) {
-//            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-//                listPermissionsNeeded.add(permission);
-//            }
-//        }
-//        if (!listPermissionsNeeded.isEmpty()) {
-//            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 1);
-//        }
-//    }
+    private void xinQuyen() {
+        String[] permissions = new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(permission);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 1);
+        }
+    }
 
     private void popupmenu() {
         PopupMenu pop = new PopupMenu(this, fbAdd);
@@ -223,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == REQUES_CODE){
             if(resultCode == RESULT_OK){
                 uri = data.getData();
-
                 readExcelData();
             }
         }
@@ -231,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void readExcelData(){
         try {
+            final String regex = "\\d+-\\d+-\\d+";
+            final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE | Pattern.COMMENTS);
 
             InputStream myInput;
 
@@ -243,8 +260,44 @@ public class MainActivity extends AppCompatActivity {
 
             HSSFSheet mySheet = myWorkBook.getSheetAt(0);
 
+            Iterator rowIter = mySheet.rowIterator();
+            for(int i=0;i<10;i++){
+                Row row = (Row) rowIter.next();
+            }
+            Calendar start = Calendar.getInstance();
+            Calendar end = Calendar.getInstance();
+            String start1,end1;
+            int dem = 0;
+            while (rowIter.hasNext()){
+                Row row = (Row) rowIter.next();
+                if(row.getCell(1).toString().startsWith("TUẦN") || row.getCell(1).toString().isEmpty()){
+                    Matcher matcher = pattern.matcher(row.getCell(1).toString());
+                    matcher.find();
+                    start1 = matcher.group(0);
+                    String[] ngayThangNam = matcher.group(0).split("-");
+                    start.set(Integer.parseInt(ngayThangNam[0]), Integer.parseInt(ngayThangNam[1]), Integer.parseInt(ngayThangNam[2]));
+
+                    matcher.find();
+                    end1 = matcher.group(0);
+                    String[] ngayThangNam2 = matcher.group(0).split("-");
+                    end.set(Integer.parseInt(ngayThangNam2[0]), Integer.parseInt(ngayThangNam2[1]), Integer.parseInt(ngayThangNam2[2]));
 
 
+                    dem = 2;
+
+                    Log.d("duong", ngayThangNam[0] +"-"+ngayThangNam[1]+"-"+ngayThangNam[2]);
+                    Log.d("duong", ngayThangNam2[0] +"-"+ngayThangNam2[1]+"-"+ngayThangNam2[2]);
+
+                    continue;
+                }else {
+                    Lich_Giang_Day lich_giang_day = new Lich_Giang_Day();
+                    start.add(Integer.parseInt(row.getCell(3).toString()) - dem, Calendar.DATE);
+                    dem = Integer.parseInt(row.getCell(3).toString());
+                    database_lich_giang_day.them_Du_Lieu(lich_giang_day);
+
+                }
+
+            }
 
         } catch (Exception e) {
             Log.e("TAG", "error "+ e.toString());

@@ -76,4 +76,15 @@ public class Lich_Giang_Day {
     public void setNgayThang(String ngayThang) {
         this.ngayThang = ngayThang;
     }
+
+    @Override
+    public String toString() {
+        return "Lich_Giang_Day{" +
+                "lopHocPhan='" + lopHocPhan + '\'' +
+                ", tinChi=" + tinChi +
+                ", tietHoc='" + tietHoc + '\'' +
+                ", phongHoc='" + phongHoc + '\'' +
+                ", ngayThang='" + ngayThang + '\'' +
+                '}';
+    }
 }
