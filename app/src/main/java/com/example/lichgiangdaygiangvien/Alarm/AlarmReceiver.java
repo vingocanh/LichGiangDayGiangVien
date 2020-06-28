@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -25,62 +26,67 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
 
-        StringBuffer tongHop = new StringBuffer();
-        Database_Lich_Giang_Day database_lich_giang_day;
-        ArrayList<Lich_Giang_Day> arrayList = new ArrayList<>();
-        Calendar ca;
-        ca = Lop_Create_Time.traVe();
-        ca.add(Calendar.DATE, 1);
+        try {
+            StringBuffer tongHop = new StringBuffer();
+            Database_Lich_Giang_Day database_lich_giang_day;
+            ArrayList<Lich_Giang_Day> arrayList = new ArrayList<>();
+            Calendar ca;
+            ca = Lop_Create_Time.traVe();
+            ca.add(Calendar.DATE, 1);
 
-        database_lich_giang_day = new Database_Lich_Giang_Day(context, Key_Database.DATABASE_NAME, null, 1);
-        arrayList.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
+            database_lich_giang_day = new Database_Lich_Giang_Day(context, Key_Database.DATABASE_NAME, null, 1);
+            arrayList.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
 
-        if(arrayList.size() == 0){
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
-            MediaPlayer mediaPlayer = MediaPlayer.create(context, alarmSound);
-            mediaPlayer.start();
+            if(arrayList.size() == 0){
+                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
+                MediaPlayer mediaPlayer = MediaPlayer.create(context, alarmSound);
+                mediaPlayer.start();
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Thông báo !!!\n")
-                    .setContentText("Ngày mai bạn rảnh ")
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-
-            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.notify((int) System.currentTimeMillis(), builder.build());
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle("Thông báo !!!\n")
+                        .setContentText("Ngày mai bạn rảnh ")
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
 
-        }else {
+                NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.notify((int) System.currentTimeMillis(), builder.build());
 
-            String lopHocPhan = "";
-            String tietHoc = "";
-            String phongHoc = "";
 
-            for(Lich_Giang_Day item : arrayList){
-                lopHocPhan = item.getLopHocPhan();
-                tietHoc = item.getTietHoc();
-                phongHoc = item.getPhongHoc();
+            }else {
 
-                tongHop.append(lopHocPhan +" " +tietHoc+" " +phongHoc+"\n");
+                String lopHocPhan = "";
+                String tietHoc = "";
+                String phongHoc = "";
+
+                for(Lich_Giang_Day item : arrayList){
+                    lopHocPhan = item.getLopHocPhan();
+                    tietHoc = item.getTietHoc();
+                    phongHoc = item.getPhongHoc();
+
+                    tongHop.append(lopHocPhan +" " +tietHoc+" " +phongHoc+"\n");
+                }
+
+                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
+                MediaPlayer mediaPlayer = MediaPlayer.create(context, alarmSound);
+                mediaPlayer.start();
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle("Thông báo !!!\n")
+                        .setContentText(tongHop.toString())
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+
+                NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.notify((int) System.currentTimeMillis(), builder.build());
+
+
             }
-
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
-            MediaPlayer mediaPlayer = MediaPlayer.create(context, alarmSound);
-            mediaPlayer.start();
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Thông báo !!!\n")
-                    .setContentText(tongHop.toString())
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-
-            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.notify((int) System.currentTimeMillis(), builder.build());
-
-
+        }catch (Exception ex){
+            Log.d("THONG BAO", ex.getMessage());
         }
+
 
     }
 

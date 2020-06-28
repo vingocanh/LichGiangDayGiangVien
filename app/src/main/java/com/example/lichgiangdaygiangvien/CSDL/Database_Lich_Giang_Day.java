@@ -21,7 +21,7 @@ public class Database_Lich_Giang_Day extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String truyVan = "CREATE TABLE IF NOT EXISTS "+Key_Database.TABALE_NAME+"("+Key_Database.ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
-                +Key_Database.LOP_HOC_PHAN+" VARCHAR(200), "
+                +Key_Database.LOP_HOC_PHAN+" VARCHAR(200) , "
                 +Key_Database.TIN_CHI+" VARCHAR(200), "
                 +Key_Database.TIET_HOC+" VARCHAR(50) , "
                 +Key_Database.PHONG_HOC+" VARCHAR(100), "

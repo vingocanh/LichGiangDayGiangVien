@@ -94,12 +94,10 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Thoi_Gian_Thong_Bao.thongBao(this);
         }
-        //Thoi_Gian_Thong_Bao.thoiGianThongBao(this);
         Intent intent = new Intent(this, Am_Thanh_Thong_Bao.class);
         this.startService(intent);
 
 
-        //ThoiGian.thoiGianThongBao(Lop_Create_Time.getLongTime(), this);
     }
 
     private void anhXa() {
