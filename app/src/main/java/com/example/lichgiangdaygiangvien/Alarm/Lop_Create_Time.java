@@ -35,7 +35,7 @@ public class Lop_Create_Time {
         int thang = calendar.get(Calendar.MONTH)+1 ;
         int ngay = calendar.get(Calendar.DATE);
 
-        String ngayThangNam = String.format("%02d",ngay) +"/"+ String.format("%02d",thang) +"/"+ String.format("%04d",nam);
+        String ngayThangNam = String.format("%02d",ngay) +"-"+ String.format("%02d",thang) +"-"+ String.format("%04d",nam);
 
         return ngayThangNam;
     }

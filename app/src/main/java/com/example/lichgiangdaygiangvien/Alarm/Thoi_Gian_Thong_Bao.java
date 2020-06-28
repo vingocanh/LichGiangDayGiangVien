@@ -21,6 +21,7 @@ public class Thoi_Gian_Thong_Bao {
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             String name = "ten";
+
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel  channel = new NotificationChannel("CHANNEL_ID", name, importance);
             notificationManager.createNotificationChannel(channel);

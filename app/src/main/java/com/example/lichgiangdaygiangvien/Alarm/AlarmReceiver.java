@@ -33,9 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         ca.add(Calendar.DATE, 1);
 
         database_lich_giang_day = new Database_Lich_Giang_Day(context, Key_Database.DATABASE_NAME, null, 1);
-        //arrayList.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
         arrayList.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
-        //arrayList.add(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
 
         if(arrayList.size() == 0){
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
@@ -48,8 +46,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setContentText("Ngày mai bạn rảnh ")
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-//            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-//            managerCompat.notify(1, builder.build());
 
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify((int) System.currentTimeMillis(), builder.build());
@@ -67,7 +63,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 phongHoc = item.getPhongHoc();
 
                 tongHop.append(lopHocPhan +" " +tietHoc+" " +phongHoc+"\n");
-                //dlTongHop += lopHocPhan +" " +tietHoc+" "+phongHoc+"\n";
             }
 
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager. TYPE_NOTIFICATION );
@@ -80,8 +75,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setContentText(tongHop.toString())
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-//            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-//            managerCompat.notify(1, builder.build());
 
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify((int) System.currentTimeMillis(), builder.build());

@@ -22,9 +22,9 @@ import com.example.lichgiangdaygiangvien.R;
 public class Fragment_Show extends Fragment {
 
     Context context;
-    FrameLayout flShow;
-    TextView tvKhongDL;
-    ListView lvDuLieu;
+    public static FrameLayout flShow;
+    public static TextView tvKhongDL;
+    public static ListView lvDuLieu;
     Database_Lich_Giang_Day database_lich_giang_day;
 
     public Fragment_Show(Context context) {
@@ -73,11 +73,12 @@ public class Fragment_Show extends Fragment {
         MainActivity.adapter_giang_day_Show.notifyDataSetChanged();
     }
 
-    public void xuLy(){
-
+    public static void xuLy(){
+        if(MainActivity.arrayList_Show.size() <= 0){
+            flShow.bringChildToFront(tvKhongDL);
+        }else {
+            flShow.bringChildToFront(lvDuLieu);
+        }
     }
 
-    private void doc_DL(){
-
-    }
 }

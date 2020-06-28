@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ca.add(Calendar.DATE, 1);
                 tvThoiGian.setText(Lop_Create_Time.getStringFromCalendar(ca));
-                show_Data_Ngay(ca);
+                //show_Data_Ngay(ca);
+                show_Data_Read(ca);
             }
         });
         ivTrai.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ca.add(Calendar.DATE, -1);
                 tvThoiGian.setText(Lop_Create_Time.getStringFromCalendar(ca));
-                show_Data_Ngay(ca);
+                //show_Data_Ngay(ca);
+                show_Data_Read(ca);
             }
         });
     }
@@ -184,6 +186,17 @@ public class MainActivity extends AppCompatActivity {
         adapter_giang_day_Show.notifyDataSetChanged();
     }
 
+    private void show_Data_Read(Calendar start){
+        try {
+            arrayList_Show.clear();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        arrayList_Show.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(start)));
+        Fragment_Show.xuLy();
+        adapter_giang_day_Show.notifyDataSetChanged();
+    }
 
     private void xinQuyen() {
         String[] permissions = new String[]{
@@ -215,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.itemRead:
-                        //new ReadDL(MainActivity.this).execute("");
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_GET_CONTENT);
                         intent.setType("application/*");
@@ -271,46 +283,50 @@ public class MainActivity extends AppCompatActivity {
             String start1,end1;
             String[] ngayThangNam, ngayThangNam2;
             int thu = 2;
+
             while (rowIter.hasNext()){
                 Row row = (Row) rowIter.next();
                 Matcher matcher = pattern1.matcher(row.getCell(1).getStringCellValue());
-                if(row.getCell(1).toString().startsWith("TUẦN") || row.getCell(1).toString().isEmpty()){
+                if(row.getCell(1).getStringCellValue().isEmpty()){
+                    continue;
+                }
+                if(row.getCell(1).toString().startsWith("TUẦN") ){
 
+                    thu = 2;
                     matcher.find();
                     start1 = matcher.group(0);
                     ngayThangNam = matcher.group(0).split("-");
-                    start.set(Integer.parseInt(ngayThangNam[2]), Integer.parseInt(ngayThangNam[1]), Integer.parseInt(ngayThangNam[0]));
+                    start.set(Integer.parseInt(ngayThangNam[2]), Integer.parseInt(ngayThangNam[1])-1, Integer.parseInt(ngayThangNam[0]));
 
                     matcher.find();
                     end1 = matcher.group(0);
                     ngayThangNam2 = matcher.group(0).split("-");
-                    end.set(Integer.parseInt(ngayThangNam2[2]), Integer.parseInt(ngayThangNam2[1]), Integer.parseInt(ngayThangNam2[0]));
-
+                    end.set(Integer.parseInt(ngayThangNam2[2]), Integer.parseInt(ngayThangNam2[1])-1, Integer.parseInt(ngayThangNam2[0]));
 
                     continue;
                 }else {
-
-//                    int tam = (int)Double.parseDouble(String.valueOf(row.getCell(3).getNumericCellValue())) - thu;
-//                    //Log.d("Test", tam+"");
-//                    start.add(tam, Calendar.DATE);
-//                    thu = Integer.parseInt(row.getCell(3).toString());
-
+                    int tam = (int)Double.parseDouble(String.valueOf(row.getCell(3).getNumericCellValue())) - thu;
+                    //Log.d("Test", tam+"");
+                    start.add( Calendar.DATE,tam);
 
                     String lopHocPhan = row.getCell(1).toString();
                     String tinChi = row.getCell(2).toString();
                     String tietHoc = row.getCell(4).toString();
                     String phongHoc = row.getCell(5).toString();
-                    String ngayThang = "";
+                    String ngayTN = Lop_Create_Time.getStringFromCalendar(start);
 
-                    Lich_Giang_Day lich_giang_day = new Lich_Giang_Day(lopHocPhan, tinChi, tietHoc, phongHoc, ngayThang);
+                    Lich_Giang_Day lich_giang_day = new Lich_Giang_Day(lopHocPhan, tinChi, tietHoc, phongHoc, ngayTN);
                     Log.d("Lịch Giảng Dạy", lich_giang_day.toString());
-                    //database_lich_giang_day.them_Du_Lieu(lich_giang_day);
+                    if(lich_giang_day != null){
+                        database_lich_giang_day.them_Du_Lieu(lich_giang_day);
+                    }
+                    thu = (int) row.getCell(3).getNumericCellValue();
                 }
-
             }
-
         } catch (Exception e) {
             Log.e("main", "error "+ e.toString());
         }
     }
+
+
 }
