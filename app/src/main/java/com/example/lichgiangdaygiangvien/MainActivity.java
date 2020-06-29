@@ -11,8 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +20,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.lichgiangdaygiangvien.Adapter.Adapter_Lich_Giang_Day;
@@ -34,30 +31,13 @@ import com.example.lichgiangdaygiangvien.CSDL.Key_Database;
 import com.example.lichgiangdaygiangvien.Alarm.Lop_Create_Time;
 import com.example.lichgiangdaygiangvien.Fragment.Fragment_Show;
 import com.example.lichgiangdaygiangvien.Fragment.Fragment_Them;
+import com.example.lichgiangdaygiangvien.PostDL.InterfaceTruyenDL;
+import com.example.lichgiangdaygiangvien.PostDL.ReadData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-//
-//import org.apache.poi.hssf.usermodel.HSSFCell;
-//import org.apache.poi.hssf.usermodel.HSSFRow;
-//import org.apache.poi.hssf.usermodel.HSSFSheet;
-//import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-//import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static FloatingActionButton fbAdd;
     public static FrameLayout flMain;
     public static FragmentManager fragmentManager;
-    TableLayout excelTableLayout;
-    Calendar ca;
+    public static Calendar ca;
     public static Fragment_Show fragment_show;
     public static ArrayList<Lich_Giang_Day> arrayList_Show;
     public static Adapter_Lich_Giang_Day adapter_giang_day_Show;
@@ -85,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
+
         xinQuyen();
         anhXa();
 
@@ -96,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(this, Am_Thanh_Thong_Bao.class);
         this.startService(intent);
-
 
     }
 
@@ -173,17 +152,6 @@ public class MainActivity extends AppCompatActivity {
         fr.commit();
     }
 
-    private void show_Data_Ngay(Calendar ca) {
-        try {
-            arrayList_Show.clear();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        arrayList_Show.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(ca)));
-        adapter_giang_day_Show.notifyDataSetChanged();
-    }
-
     private void show_Data_Read(Calendar start){
         try {
             arrayList_Show.clear();
@@ -226,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.itemRead:
+                        arrayList_Show.clear();
+                        database_lich_giang_day.xoaData();
+
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_GET_CONTENT);
                         intent.setType("application/*");
@@ -250,80 +221,25 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == REQUES_CODE){
             if(resultCode == RESULT_OK){
                 uri = data.getData();
-                readExcelData();
+                readExcelData(uri);
             }
         }
     }
 
-    public void readExcelData(){
-        try {
-            final String regex = "\\d+-\\d+-\\d+";
-            //final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE );
-            Pattern pattern1 = Pattern.compile(regex);
+    public void readExcelData(Uri uri){
+        ReadData read = new ReadData(this);
+        read.execute(uri);
+        read.setTruyenDL(new InterfaceTruyenDL() {
+            @Override
+            public void truyenDL(ArrayList<Lich_Giang_Day> arrayList) {
+                for (Lich_Giang_Day item : arrayList){
+                    database_lich_giang_day.them_Du_Lieu(item);
 
-            InputStream myInput;
-
-            myInput = getContentResolver().openInputStream(uri);
-            POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
-
-            HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
-
-
-            HSSFSheet mySheet = myWorkBook.getSheetAt(0);
-
-            Iterator rowIter = mySheet.rowIterator();
-
-            for(int i=0;i<10;i++){
-                Row row = (Row) rowIter.next();
-            }
-            Calendar start = Calendar.getInstance();
-            Calendar end = Calendar.getInstance();
-            String start1,end1;
-            String[] ngayThangNam, ngayThangNam2;
-            int thu = 2;
-
-            while (rowIter.hasNext()){
-                Row row = (Row) rowIter.next();
-                Matcher matcher = pattern1.matcher(row.getCell(1).getStringCellValue());
-                if(row.getCell(1).getStringCellValue().isEmpty()){
-                    continue;
+                    Log.d("abcdef", item.toString());
                 }
-                if(row.getCell(1).toString().startsWith("TUẦN") ){
-
-                    thu = 2;
-                    matcher.find();
-                    start1 = matcher.group(0);
-                    ngayThangNam = matcher.group(0).split("-");
-                    start.set(Integer.parseInt(ngayThangNam[2]), Integer.parseInt(ngayThangNam[1])-1, Integer.parseInt(ngayThangNam[0]));
-
-                    matcher.find();
-                    end1 = matcher.group(0);
-                    ngayThangNam2 = matcher.group(0).split("-");
-                    end.set(Integer.parseInt(ngayThangNam2[2]), Integer.parseInt(ngayThangNam2[1])-1, Integer.parseInt(ngayThangNam2[0]));
-
-                    continue;
-                }else {
-                    int tam = (int)Double.parseDouble(String.valueOf(row.getCell(3).getNumericCellValue())) - thu;
-                    //Log.d("Test", tam+"");
-                    start.add( Calendar.DATE,tam);
-
-                    String lopHocPhan = row.getCell(1).toString();
-                    String tinChi = row.getCell(2).toString();
-                    String tietHoc = row.getCell(4).toString();
-                    String phongHoc = row.getCell(5).toString();
-                    String ngayTN = Lop_Create_Time.getStringFromCalendar(start);
-
-                    Lich_Giang_Day lich_giang_day = new Lich_Giang_Day(lopHocPhan, tinChi, tietHoc, phongHoc, ngayTN);
-                    Log.d("Lịch Giảng Dạy", lich_giang_day.toString());
-                    if(lich_giang_day != null){
-                        database_lich_giang_day.them_Du_Lieu(lich_giang_day);
-                    }
-                    thu = (int) row.getCell(3).getNumericCellValue();
-                }
+                show_Data_Read(ca);
             }
-        } catch (Exception e) {
-            Log.e("main", "error "+ e.toString());
-        }
+        });
     }
 
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -52,7 +53,7 @@ public class Adapter_Lich_Giang_Day extends BaseAdapter {
     }
 
     public class ViewHoder{
-        RadioButton rbCheck;
+        CheckBox rbCheck;
         TextView tvLopMonHoc, tvTietHoc, tvNgay, tvPhongHoc, tvNgaySua;
         ImageView ivShow;
         Database_Lich_Giang_Day database_lich_giang_day;
@@ -97,7 +98,7 @@ public class Adapter_Lich_Giang_Day extends BaseAdapter {
     }
 
     private void anhXa(ViewHoder hoder, View view){
-        hoder.rbCheck = (RadioButton) view.findViewById(R.id.rbCheck);
+        hoder.rbCheck = (CheckBox) view.findViewById(R.id.rbCheck);
         hoder.tvLopMonHoc = (TextView) view.findViewById(R.id.tvLopHocPhan);
         hoder.tvTietHoc = (TextView) view.findViewById(R.id.tvTietHoc);
         hoder.tvNgay = (TextView) view.findViewById(R.id.tvNgay);

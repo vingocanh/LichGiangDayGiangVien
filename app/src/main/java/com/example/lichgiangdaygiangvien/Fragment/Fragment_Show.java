@@ -62,7 +62,7 @@ public class Fragment_Show extends Fragment {
             ex.printStackTrace();
         }
 
-        MainActivity.arrayList_Show.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.ngayThangNam()));
+        MainActivity.arrayList_Show.addAll(database_lich_giang_day.lay_Du_Lieu(Lop_Create_Time.getStringFromCalendar(MainActivity.ca)));
 
         if(MainActivity.arrayList_Show.size() <= 0){
             flShow.bringChildToFront(tvKhongDL);
@@ -70,6 +70,8 @@ public class Fragment_Show extends Fragment {
             flShow.bringChildToFront(lvDuLieu);
         }
 
+
+        xuLy();
         MainActivity.adapter_giang_day_Show.notifyDataSetChanged();
     }
 

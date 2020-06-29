@@ -8,6 +8,12 @@ import androidx.annotation.Nullable;
 
 public class Am_Thanh_Thong_Bao extends Service {
 
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -16,10 +22,10 @@ public class Am_Thanh_Thong_Bao extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Thoi_Gian_Thong_Bao.thoiGianThongBao(this);
 
         return START_NOT_STICKY;
     }
-
 
 }

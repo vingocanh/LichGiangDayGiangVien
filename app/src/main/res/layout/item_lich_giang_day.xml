@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#D543A047"
+    android:background="#E900897B"
     android:id="@+id/lnItem"
     >
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/rbCheck"
         android:layout_width="50dp"
         android:layout_height="50dp"

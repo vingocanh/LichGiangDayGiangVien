@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LichGiangDayGiangVien</string>
+    <string name="app_name">Calendar</string>
     <string name="tvName">"Lịch Giảng Dạy"</string>
     <string name="lopHP">"Ứng dụng thuật toán-2-19-3 (K14.TTĐA.CHUNG.K2.D3.N01)"</string>
     <string name="phongHoc">"C5.205_997-690-3289"</string>

@@ -139,6 +139,13 @@ public class Database_Lich_Giang_Day extends SQLiteOpenHelper {
         }
     }
 
+    public void xoaData(){
+        SQLiteDatabase database = getWritableDatabase();
+        String xoa = " DELETE FROM "+Key_Database.TABALE_NAME;
+
+        database.execSQL(xoa);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
