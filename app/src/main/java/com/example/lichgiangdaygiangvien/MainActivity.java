@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         this.startService(intent);
 
     }
-
     private void anhXa() {
         tvGiangDay = (TextView) findViewById(R.id.tvGiangDay);
         tvThoiGian = (TextView) findViewById(R.id.tvThoiGian);
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -133,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
     private void them_DL() {
         FragmentTransaction fr = fragmentManager.beginTransaction();
 
@@ -142,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
         fr.addToBackStack("frThem");
         fr.commit();
     }
-
     public static void show_Data() {
         FragmentTransaction fr = fragmentManager.beginTransaction();
 
@@ -151,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         fr.commit();
     }
-
     private void show_Data_Read(Calendar start){
         try {
             arrayList_Show.clear();
@@ -163,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
         Fragment_Show.xuLy();
         adapter_giang_day_Show.notifyDataSetChanged();
     }
-
     private void xinQuyen() {
         String[] permissions = new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -179,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 1);
         }
     }
-
     private void popupmenu() {
         PopupMenu pop = new PopupMenu(this, fbAdd);
         pop.getMenuInflater().inflate(R.menu.content_add, pop.getMenu());
@@ -213,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
 
         pop.show();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

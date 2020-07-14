@@ -41,9 +41,7 @@ public class ReadData extends AsyncTask<Uri, HSSFWorkbook, ArrayList<Lich_Giang_
     @Override
     protected ArrayList<Lich_Giang_Day> doInBackground(Uri... uris) {
         ArrayList<Lich_Giang_Day> arrayList = new ArrayList<>();
-
         try {
-
             final String regex = "\\d+-\\d+-\\d+";
             //final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE );
             Pattern pattern1 = Pattern.compile(regex);
